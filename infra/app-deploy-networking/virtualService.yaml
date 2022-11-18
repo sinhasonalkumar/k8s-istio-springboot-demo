@@ -32,3 +32,17 @@ spec:
         host: demo-product-svc.default.svc.cluster.local
         port:
           number: 8080                      
+    corsPolicy:
+      allowOrigins:
+      - regex: 'http://*.company.com'
+      allowMethods:
+      - GET
+      - POST
+      - PUT
+      - DELETE
+      - OPTIONS
+      allowCredentials: false
+      allowHeaders:
+      - Authorization
+      - Content-Type
+      maxAge: "24h"      
