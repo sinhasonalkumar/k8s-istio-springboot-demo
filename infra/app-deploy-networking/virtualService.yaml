@@ -11,6 +11,10 @@ spec:
   - match:
     - uri:
         prefix: /v1/products
+      method: 
+        exact: GET
+    rewrite:
+      uri: /v1/products
     route:
     - destination:
         host: demo-product-svc.default.svc.cluster.local
