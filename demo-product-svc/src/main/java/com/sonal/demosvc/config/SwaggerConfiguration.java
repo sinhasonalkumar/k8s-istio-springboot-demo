@@ -57,7 +57,7 @@ public class SwaggerConfiguration {
         .securityContexts(Arrays.asList(securityContext()))
         .securitySchemes(Arrays.asList(apiKey()))
         .select()
-        .apis(RequestHandlerSelectors.basePackage("com.sonal.demosvc.controller"))
+        .apis(RequestHandlerSelectors.basePackage("com.sonal.demo.productssvc.controller"))
         .paths(PathSelectors.any())
         .build();
   }
