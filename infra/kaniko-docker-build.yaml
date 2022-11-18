@@ -1,0 +1,30 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: kaniko
+spec:
+  containers:
+  - name: kaniko
+    image: gcr.io/kaniko-project/executor:debug
+    command:
+    - "sleep"
+    args:
+      - "9999999"
+    volumeMounts:
+      - name: docker-reg-secret
+        mountPath: /kaniko/.docker
+      - name: source-code-pv
+        mountPath: /sourceCode  
+  restartPolicy: Never
+  volumes:
+    - name: docker-reg-secret
+      secret:
+        secretName: docker-reg-secret
+        items:
+          - key: .dockerconfigjson
+            path: config.json
+    - name: source-code-pv
+      hostPath:
+        path: /tmp/sourceCode/kaniko-demo
+        type: Directory        
