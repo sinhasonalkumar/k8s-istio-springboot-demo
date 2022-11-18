@@ -20,3 +20,39 @@ spec:
         host: demo-product-svc.default.svc.cluster.local
         port:
           number: 8080
+  - match:
+    - uri:
+        prefix: /v1/products
+      method: 
+        exact: POST
+    rewrite:
+      uri: /v1/products
+    route:
+    - destination:
+        host: demo-product-svc.default.svc.cluster.local
+        port:
+          number: 8080
+  - match:
+    - uri:
+        prefix: /v1/products
+      method: 
+        exact: PUT
+    rewrite:
+      uri: /v1/products
+    route:
+    - destination:
+        host: demo-product-svc.default.svc.cluster.local
+        port:
+          number: 8080
+  - match:
+    - uri:
+        prefix: /v1/products
+      method: 
+        exact: DELETE
+    rewrite:
+      uri: /v1/products
+    route:
+    - destination:
+        host: demo-product-svc.default.svc.cluster.local
+        port:
+          number: 8080                        
