@@ -24,14 +24,9 @@ spec:
     - uri:
         prefix: /v1/products
       method: 
-        exact: DELETE            
+        exact: DELETE
     rewrite:
       uri: /v1/products
-    route:
-    - destination:
-        host: demo-product-svc.default.svc.cluster.local
-        port:
-          number: 8080                      
     corsPolicy:
       allowOrigins:
       - regex: 'http://*.company.com'
@@ -45,4 +40,13 @@ spec:
       allowHeaders:
       - Authorization
       - Content-Type
-      maxAge: "24h"      
+      maxAge: "24h" 
+    route:
+    - destination:
+        host: demo-product-svc.default.svc.cluster.local
+        port:
+          number: 8080                      
+    retries:
+      attempts: 3
+      perTryTimeout: 2s
+      retryOn: connect-failure,refused-stream,503
