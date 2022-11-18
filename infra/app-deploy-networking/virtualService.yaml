@@ -1,0 +1,18 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: demo-product-svc-vs
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - demo-product-svc-ig
+  http:
+  - match:
+    - uri:
+        prefix: /v1/products
+    route:
+    - destination:
+        host: demo-product-svc.default.svc.cluster.local
+        port:
+          number: 8080
