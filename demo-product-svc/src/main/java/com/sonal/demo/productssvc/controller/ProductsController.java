@@ -1,4 +1,4 @@
-package com.sonal.demosvc.controller;
+package com.sonal.demo.productssvc.controller;
 
 import java.util.Arrays;
 import java.util.List;
