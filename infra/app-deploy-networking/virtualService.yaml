@@ -12,7 +12,7 @@ spec:
   - match:
     - uri:
         #prefix: /v1/products
-        regex: "(/pr.*)?/v1/products(/.*)?"
+        regex: "(/pr[0-9]+)?/v1/products(/.*)?"
       method: 
         exact: GET
     - uri:
