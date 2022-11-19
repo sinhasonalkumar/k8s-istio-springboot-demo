@@ -11,7 +11,8 @@ spec:
   http:
   - match:
     - uri:
-        prefix: /v1/products
+        #prefix: /v1/products
+        regex: "(/pr.*)?/v1/products(/.*)?"
       method: 
         exact: GET
     - uri:
