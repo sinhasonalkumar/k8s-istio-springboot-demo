@@ -11,8 +11,9 @@ spec:
   http:
   - match:
     - uri:
-        #prefix: /v1/products
-        regex: "(/pr[0-9]+)?/v1/products(/.*)?"
+        prefix: /v1/products
+        # open with issue with regex rewrite https://github.com/istio/istio/issues/22290
+        #regex: "(/pr[0-9]+)?/v1/products(/.*)?" 
       method: 
         exact: GET
     - uri:
