@@ -1,0 +1,45 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: demo-product-svc-actuator-vs
+spec:
+  hosts:
+  - "actuator-api.mycompany.com"
+  gateways:
+  - demo-product-svc-ig
+  #- mesh
+  http:
+  - match:
+    - uri:
+        prefix: /actuator/health
+        # open with issue with regex rewrite https://github.com/istio/istio/issues/22290
+        #regex: "(/pr[0-9]+)?/v1/products(/.*)?" 
+      method: 
+        exact: GET
+    - uri:
+        prefix: /actuator/info
+      method: 
+        exact: GET
+    corsPolicy:
+      allowOrigins:
+      - regex: 'http://*.company.com'
+      allowMethods:
+      - GET
+      - POST
+      - PUT
+      - DELETE
+      - OPTIONS
+      allowCredentials: false
+      allowHeaders:
+      - Authorization
+      - Content-Type
+      maxAge: "24h" 
+    route:
+    - destination:
+        host: demo-product-svc.default.svc.cluster.local
+        port:
+          number: 8080                      
+    retries:
+      attempts: 3
+      perTryTimeout: 2s
+      retryOn: connect-failure,refused-stream,503
