@@ -1,0 +1,40 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: demo-product-svc
+  labels:
+    app: demo-product-svc
+spec:
+  minReplicaCount: 1
+  maxReplicaCount: 11
+  advanced:
+    # HPA config
+    horizontalPodAutoscalerConfig:
+      behavior:
+        scaleDown:
+          stabilizationWindowSeconds: 10
+          policies:
+            - type: Percent
+              value: 40
+              periodSeconds: 10
+        scaleUp:
+          stabilizationWindowSeconds: 0
+          policies:
+            - type: Percent
+              value: 40
+              periodSeconds: 10
+  fallback:
+    failureThreshold: 3
+    replicas: 1
+  scaleTargetRef:
+    name: demo-product-svc
+  triggers:
+    - type: metrics-api
+      metadata:
+        targetValue: "1000"
+        url: 'https://[Replace-With-Your-DT-Org-SubDomain].dynatrace.com/api/v2/metrics/query?metricSelector=builtin:service.requestCount.total:filter(and(in("dt.entity.service",entitySelector("type(service),entityName(~"ProductsController~")")))):splitBy():sum:timeshift(-3m):rollup(avg,3m):last'
+        valueLocation: 'result.0.data.0.values.0'
+        authMode: apiKey
+        keyParamName: Authorization
+      authenticationRef:
+        name: keda-dynatrace-auth

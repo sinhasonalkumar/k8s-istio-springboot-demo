@@ -1,0 +1,9 @@
+apiVersion: keda.sh/v1alpha1
+kind: TriggerAuthentication
+metadata:
+  name: keda-dynatrace-auth
+spec:
+  secretTargetRef:
+  - parameter: apiKey
+    name: keda-dynatrace-secret
+    key: apiKey

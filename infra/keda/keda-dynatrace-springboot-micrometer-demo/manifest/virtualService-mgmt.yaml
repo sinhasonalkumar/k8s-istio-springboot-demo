@@ -1,0 +1,34 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  annotations:
+    prometheus.io/path: "/actuator/prometheus"
+    prometheus.io/port: "8080"
+    prometheus.io/scrape: "true"
+    metrics.dynatrace.com/port: '8080'
+    metrics.dynatrace.com/scrape: 'true'
+    metrics.dynatrace.com/secure: 'true'
+    metrics.dynatrace.com/path: '/actuator/prometheus'
+  name: demo-product-svc-mgmt-vs
+spec:
+  gateways:
+  - demo-product-svc-ig
+  hosts:
+  - 'product-mgmt.mycompany.com'
+  http:
+  - corsPolicy:
+      allowCredentials: true
+      allowHeaders:
+      - '*'
+      allowOrigins:
+      - regex: .*.mycompany.com$
+    match:
+    - uri:
+        prefix:  /mgmt
+    rewrite:
+      uri: /actuator
+    route:
+    - destination:
+        host: demo-product-svc.default.svc.cluster.local
+        port:
+          number: 8080

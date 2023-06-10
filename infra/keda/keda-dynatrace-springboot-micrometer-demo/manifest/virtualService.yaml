@@ -1,0 +1,33 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  annotations:
+    prometheus.io/path: "/actuator/prometheus"
+    prometheus.io/port: "8080"
+    prometheus.io/scrape: "true"
+    metrics.dynatrace.com/port: '8080'
+    metrics.dynatrace.com/scrape: 'true'
+    metrics.dynatrace.com/secure: 'true'
+    metrics.dynatrace.com/path: '/actuator/prometheus'
+  name: demo-product-svc-vs
+spec:
+  gateways:
+  - demo-product-svc-ig
+  hosts:
+  - 'keda-dt.api.mycompany.com'
+  - 'product.mycompany.com'
+  http:
+  - corsPolicy:
+      allowCredentials: true
+      allowHeaders:
+      - '*'
+      allowOrigins:
+      - regex: .*.mycompany.com$
+    match:
+    - uri:
+        prefix:  /v1/ 
+    route:
+    - destination:
+        host: demo-product-svc.default.svc.cluster.local
+        port:
+          number: 8080
